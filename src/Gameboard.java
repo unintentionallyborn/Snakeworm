@@ -67,9 +67,10 @@ public class Gameboard extends JPanel implements KeyListener, ActionListener {
         graphics.setColor(Color.black);
         graphics.fillRect(25, 75, 850, 575);
 
-
-        rightMouth = new ImageIcon("rightmouth.png");
-        rightMouth.paintIcon(this, graphics, snakeXLength[0], snakeYLength[0]);
+        if (moves == 0) {
+            rightMouth = new ImageIcon("rightmouth.png");
+            rightMouth.paintIcon(this, graphics, snakeXLength[0], snakeYLength[0]);
+        }
 
         for (int i = 0; i < snakeLength; i++) {
             if (i == 0 && right) {
@@ -93,15 +94,20 @@ public class Gameboard extends JPanel implements KeyListener, ActionListener {
                 snakeImage = new ImageIcon("snakeimage.png");
                 snakeImage.paintIcon(this, graphics, snakeXLength[i], snakeYLength[i]);
             }
-
         }
 
         graphics.dispose();
+
+        System.out.println("paint");
+        printSnakeX();
+        printSnakeY();
+        System.out.println();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        timer.start();
+        repaint();
+
         if (right) {
             for (int i = snakeLength - 1; i >= 0; i--) {
                 snakeYLength[i + 1] = snakeYLength[i];
@@ -113,11 +119,11 @@ public class Gameboard extends JPanel implements KeyListener, ActionListener {
                 } else {
                     snakeXLength[i] = snakeXLength[i - 1];
                 }
-                if(snakeXLength[i] > 850) {
+                if (snakeXLength[i] > 850) {
                     snakeXLength[i] = 25;
                 }
             }
-            repaint();
+
         }
 
         if (left) {
@@ -131,14 +137,14 @@ public class Gameboard extends JPanel implements KeyListener, ActionListener {
                 } else {
                     snakeXLength[i] = snakeXLength[i - 1];
                 }
-                if(snakeXLength[i] < 25) {
+                if (snakeXLength[i] < 25) {
                     snakeXLength[i] = 850;
                 }
             }
-            repaint();
+
         }
 
-        if(up) {
+        if (up) {
             for (int i = snakeLength - 1; i >= 0; i--) {
                 snakeXLength[i + 1] = snakeXLength[i];
 
@@ -149,14 +155,14 @@ public class Gameboard extends JPanel implements KeyListener, ActionListener {
                 } else {
                     snakeYLength[i] = snakeYLength[i - 1];
                 }
-                if(snakeYLength[i] < 75) {
+                if (snakeYLength[i] < 75) {
                     snakeYLength[i] = 625;
                 }
             }
-            repaint();
+
         }
 
-        if(down) {
+        if (down) {
             for (int i = snakeLength - 1; i >= 0; i--) {
                 snakeXLength[i + 1] = snakeXLength[i];
 
@@ -167,12 +173,19 @@ public class Gameboard extends JPanel implements KeyListener, ActionListener {
                 } else {
                     snakeYLength[i] = snakeYLength[i - 1];
                 }
-                if(snakeYLength[i] > 625) {
+                if (snakeYLength[i] > 625) {
                     snakeYLength[i] = 75;
                 }
             }
-            repaint();
+
         }
+        //System.out.println(snakeXLength + " " + snakeYLength);
+
+
+        System.out.println("actionPerformed");
+        printSnakeX();
+        printSnakeY();
+        System.out.println();
     }
 
     @Override
@@ -193,6 +206,7 @@ public class Gameboard extends JPanel implements KeyListener, ActionListener {
             }
             up = false;
             down = false;
+            //System.out.println("Right pressed");
         }
 
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -206,6 +220,7 @@ public class Gameboard extends JPanel implements KeyListener, ActionListener {
             }
             up = false;
             down = false;
+            //System.out.println("Left pressed");
         }
 
         if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -234,10 +249,28 @@ public class Gameboard extends JPanel implements KeyListener, ActionListener {
             left = false;
             right = false;
         }
+
+
+        System.out.println("keyPressed");
+        printSnakeX();
+        printSnakeY();
+        System.out.println();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    public void printSnakeX() {
+        for (int i = 0; i < 3; i++) {
+            System.out.println(snakeXLength[i] + " ");
+        }
+    }
+
+    public void printSnakeY() {
+        for (int i = 0; i < 3; i++) {
+            System.out.println(snakeYLength[i] + " ");
+        }
     }
 }
